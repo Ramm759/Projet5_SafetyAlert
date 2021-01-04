@@ -106,7 +106,7 @@ public class DataRepository {
     public int getStationNumber(String address) {
         int stationNumber = 0;
         for (Firestation firestation : database.getFirestations()) {
-            if (firestation.getAddress() == address) {
+            if (firestation.getAddress().equals(address)) {
                 stationNumber = firestation.getStation();
             }
         }

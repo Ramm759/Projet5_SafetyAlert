@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.Collection;
 
 // On expose les Api Rest pour gérer les requêtes qui viennent d'un client web
@@ -49,7 +50,6 @@ public class PersonController {
         return personService.getChildrenByAddress(address);
     }
 
-
     @GetMapping(path = "phoneAlert")
     public Collection<String> getCommunityPhone(@RequestParam int firestation) {
         return personService.getCommunityPhone(firestation);
@@ -61,8 +61,8 @@ public class PersonController {
     }
 
     @GetMapping(path = "flood/stations")
-    public Collection<PersonInfo> getCommunityByIdStation(@RequestParam int stations){
-        return personService.getPersonnsByIdStation(stations);
+    public Collection<PersonInfo> getCommunityByIdStation(@RequestParam int[] idStationList){
+        return personService.getPersonnsByIdStation(idStationList);
     }
 
     @GetMapping(path = "personInfo")

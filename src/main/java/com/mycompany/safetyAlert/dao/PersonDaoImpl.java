@@ -17,10 +17,9 @@ public class PersonDaoImpl implements PersonDao {
     @Autowired
     IPersonService personService;
 
-
     @Override
     public boolean createPerson(Person person) {
-        // On vérifie qie la personne n'existe pas dans la Dao ( nom + prénom)
+        // On vérifie que la personne n'existe pas dans la Dao ( nom + prénom)
         if (!dataRepository.database.getPersons().contains(person)) {
             personService.createPerson(person);
             return true;

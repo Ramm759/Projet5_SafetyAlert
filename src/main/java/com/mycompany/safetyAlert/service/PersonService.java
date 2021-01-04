@@ -163,35 +163,39 @@ public class PersonService implements IPersonService {
     }
 
     @Override
-    public Collection<PersonInfo> getPersonnsByIdStation(int idStation) {
+    public Collection<PersonInfo> getPersonnsByIdStation(int[] idStationList) {
         int nbMineurs = 0;
         int nbMajeurs = 0;
         Collection<PersonInfo> personInfoCollection = new ArrayList<>();
-        // Pour chaque adresse correspondant à stationNumber
-        for (String address : dataRepository.getAddressByIdStation(idStation)) {
-            // On cherche les personnes correspondantes
-            for (Person person : dataRepository.getPersonByAddress(address)) {
-                PersonInfo personInfo = new PersonInfo();
-                personInfo.setLastName(person.getLastName());
-                personInfo.setFirstName(person.getFirstName());
-                personInfo.setPhone(person.getPhone());
 
-                Medicalrecord medicalrecord = dataRepository.getMedicalrecordByName(person.getLastName(), person.getFirstName());
-                int age = dataRepository.calculateAge(medicalrecord.getBirthdate());
+        for (int idStation : idStationList) {
 
-                personInfo.setAge(age);
+            // Pour chaque adresse correspondant à stationNumber
+            for (String address : dataRepository.getAddressByIdStation(idStation)) {
+                // On cherche les personnes correspondantes
+                for (Person person : dataRepository.getPersonByAddress(address)) {
+                    PersonInfo personInfo = new PersonInfo();
+                    personInfo.setLastName(person.getLastName());
+                    personInfo.setFirstName(person.getFirstName());
+                    personInfo.setPhone(person.getPhone());
 
-                if (age <= 18) {
-                    nbMineurs++;
-                } else nbMajeurs++;
+                    Medicalrecord medicalrecord = dataRepository.getMedicalrecordByName(person.getLastName(), person.getFirstName());
+                    int age = dataRepository.calculateAge(medicalrecord.getBirthdate());
 
-                personInfo.setMedications(medicalrecord.getMedications());
-                personInfo.setAllergies(medicalrecord.getAllergies());
+                    personInfo.setAge(age);
 
-                personInfoCollection.add(personInfo);
+                    if (age <= 18) {
+                        nbMineurs++;
+                    } else nbMajeurs++;
+
+                    personInfo.setMedications(medicalrecord.getMedications());
+                    personInfo.setAllergies(medicalrecord.getAllergies());
+
+                    personInfoCollection.add(personInfo);
+                }
             }
         }
-        return personInfoCollection;
+        return  personInfoCollection;
     }
 }
 
