@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class PersonServiceDao implements IPersonService{
+public class PersonServiceDao implements IPersonService {
     @Autowired
     DataRepository dataRepository;
 
@@ -26,9 +26,9 @@ public class PersonServiceDao implements IPersonService{
 
     @Override
     public boolean updatePerson(Person person) {
-        if (dataRepository.database.getPersons().remove(person)){
+        if (dataRepository.database.getPersons().remove(person)) {
             createPerson(person);
-            return  true;
+            return true;
         }
         return false;
     }

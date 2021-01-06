@@ -11,12 +11,12 @@ public class Firestation {
         if (this == o) return true;
         if (!(o instanceof Firestation)) return false;
         Firestation that = (Firestation) o;
-        return Objects.equals(getAddress(), that.getAddress());
+        return getStation() == that.getStation() && Objects.equals(getAddress(), that.getAddress());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getAddress());
+        return Objects.hash(getAddress(), getStation());
     }
 
     public String getAddress() {
