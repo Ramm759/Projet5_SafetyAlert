@@ -88,7 +88,6 @@ public class PersonService implements IPersonService {
         return personInfoCollection;
     }
 
-
     @Override
     public Collection<String> getCommunityPhone(int stationNumber) {
         Collection<String> collectionPhones = new HashSet<>();
