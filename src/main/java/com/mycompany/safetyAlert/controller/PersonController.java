@@ -1,9 +1,7 @@
 package com.mycompany.safetyAlert.controller;
 
 import com.mycompany.safetyAlert.dao.PersonDao;
-import com.mycompany.safetyAlert.dto.PersonInfo;
-import com.mycompany.safetyAlert.dto.PersonInfoWithFirestationNb;
-import com.mycompany.safetyAlert.dto.PersonInfoWithMinor;
+import com.mycompany.safetyAlert.dto.*;
 import com.mycompany.safetyAlert.model.Person;
 import com.mycompany.safetyAlert.service.IPersonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +44,7 @@ public class PersonController {
     }
 
     @GetMapping(path = "childAlert")
-    public Collection<PersonInfo> getChildrenByAddress(@RequestParam String address) {
+    public Collection<PersonInfoForChildAlert> getChildrenByAddress(@RequestParam String address) {
         return personService.getChildrenByAddress(address);
     }
 
@@ -61,12 +59,12 @@ public class PersonController {
     }
 
     @GetMapping(path = "flood/stations")
-    public Collection<PersonInfo> getCommunityByIdStation(@RequestParam int[] idStationList){
-        return personService.getPersonnsByIdStation(idStationList);
+    public Collection<PersonInfoForFlood> getCommunityByIdStation(@RequestParam int[] stations){
+        return personService.getPersonnsByIdStation(stations);
     }
 
     @GetMapping(path = "personInfo")
-    public Collection<PersonInfo> getPersonInfos(@RequestParam String lastName, @RequestParam(required = false) String firstName) {
+    public Collection<PersonInfoWithoutPhone> getPersonInfos(@RequestParam String lastName, @RequestParam(required = false) String firstName) {
         return personService.getPersonInfo(lastName, firstName);
     }
     @GetMapping(path = "communityEmail")

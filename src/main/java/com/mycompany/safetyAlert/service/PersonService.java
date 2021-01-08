@@ -1,8 +1,6 @@
 package com.mycompany.safetyAlert.service;
 
-import com.mycompany.safetyAlert.dto.PersonInfo;
-import com.mycompany.safetyAlert.dto.PersonInfoWithFirestationNb;
-import com.mycompany.safetyAlert.dto.PersonInfoWithMinor;
+import com.mycompany.safetyAlert.dto.*;
 import com.mycompany.safetyAlert.model.Medicalrecord;
 import com.mycompany.safetyAlert.model.Person;
 import com.mycompany.safetyAlert.repository.DataRepository;
@@ -60,27 +58,26 @@ public class PersonService implements IPersonService {
     }
 
     @Override
-    public Collection<PersonInfo> getChildrenByAddress(String address) {
-        Collection<PersonInfo> personInfoCollection = new ArrayList<>();
+    public Collection<PersonInfoForChildAlert> getChildrenByAddress(String address) {
+        Collection<PersonInfoForChildAlert> personInfoCollection = new ArrayList<>();
         int nbMineurs = 0;
         int nbMajeurs = 0;
         for (Person person : dataRepository.getPersonByAddress(address)) {
-            PersonInfo personInfo = new PersonInfo();
-            personInfo.setFirstName(person.getFirstName());
-            personInfo.setLastName(person.getLastName());
-            personInfo.setAddress(person.getAddress());
-            personInfo.setPhone(person.getPhone());
+            PersonInfoForChildAlert personInfoForChildAlert = new PersonInfoForChildAlert();
+            personInfoForChildAlert.setFirstName(person.getFirstName());
+            personInfoForChildAlert.setLastName(person.getLastName());
+            personInfoForChildAlert.setAddress(person.getAddress());
 
             Medicalrecord medicalrecord = dataRepository.getMedicalrecordByName(person.getLastName(), person.getFirstName());
 
             int age = dataRepository.calculateAge(medicalrecord.getBirthdate());
-            personInfo.setAge(age);
+            personInfoForChildAlert.setAge(age);
 
             if (age <= 18) {
                 nbMineurs++;
             } else nbMajeurs++;
 
-            personInfoCollection.add(personInfo);
+            personInfoCollection.add(personInfoForChildAlert);
         }
         if (nbMineurs == 0) {
             personInfoCollection.clear();
@@ -128,11 +125,11 @@ public class PersonService implements IPersonService {
     }
 
     @Override
-    public Collection<PersonInfo> getPersonInfo(String lastName, String firstName) {
-        Collection<PersonInfo> personInfoCollection = new ArrayList<>();
+    public Collection<PersonInfoWithoutPhone> getPersonInfo(String lastName, String firstName) {
+        Collection<PersonInfoWithoutPhone> personInfoCollection = new ArrayList<>();
         List<Person> personList = dataRepository.listPersonnByName(lastName, firstName);
         for (Person person : personList) {
-            PersonInfo personInfo = new PersonInfo();
+            PersonInfoWithoutPhone personInfo = new PersonInfoWithoutPhone();
             personInfo.setFirstName(person.getFirstName());
             personInfo.setLastName(person.getLastName());
             personInfo.setAddress(person.getAddress());
@@ -162,10 +159,10 @@ public class PersonService implements IPersonService {
     }
 
     @Override
-    public Collection<PersonInfo> getPersonnsByIdStation(int[] idStationList) {
+    public Collection<PersonInfoForFlood> getPersonnsByIdStation(int[] idStationList) {
         int nbMineurs = 0;
         int nbMajeurs = 0;
-        Collection<PersonInfo> personInfoCollection = new ArrayList<>();
+        Collection<PersonInfoForFlood> personInfoCollection = new ArrayList<>();
 
         for (int idStation : idStationList) {
 
@@ -173,24 +170,24 @@ public class PersonService implements IPersonService {
             for (String address : dataRepository.getAddressByIdStation(idStation)) {
                 // On cherche les personnes correspondantes
                 for (Person person : dataRepository.getPersonByAddress(address)) {
-                    PersonInfo personInfo = new PersonInfo();
-                    personInfo.setLastName(person.getLastName());
-                    personInfo.setFirstName(person.getFirstName());
-                    personInfo.setPhone(person.getPhone());
+                    PersonInfoForFlood personInfoForFlood = new PersonInfoForFlood();
+                    personInfoForFlood.setLastName(person.getLastName());
+                    personInfoForFlood.setFirstName(person.getFirstName());
+                    personInfoForFlood.setPhone(person.getPhone());
 
                     Medicalrecord medicalrecord = dataRepository.getMedicalrecordByName(person.getLastName(), person.getFirstName());
                     int age = dataRepository.calculateAge(medicalrecord.getBirthdate());
 
-                    personInfo.setAge(age);
+                    personInfoForFlood.setAge(age);
 
                     if (age <= 18) {
                         nbMineurs++;
                     } else nbMajeurs++;
 
-                    personInfo.setMedications(medicalrecord.getMedications());
-                    personInfo.setAllergies(medicalrecord.getAllergies());
+                    personInfoForFlood.setMedications(medicalrecord.getMedications());
+                    personInfoForFlood.setAllergies(medicalrecord.getAllergies());
 
-                    personInfoCollection.add(personInfo);
+                    personInfoCollection.add(personInfoForFlood);
                 }
             }
         }
