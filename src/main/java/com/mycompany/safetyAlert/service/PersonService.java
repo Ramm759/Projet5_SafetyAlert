@@ -17,6 +17,10 @@ public class PersonService implements IPersonService {
     @Autowired
     private DataRepository dataRepository;
 
+
+
+
+
     @Override
     public Collection<PersonInfoWithMinor> getPersonInfo(int stationNumber) {
         Collection<PersonInfoWithMinor> personInfoCollection = new ArrayList<>();
@@ -192,6 +196,11 @@ public class PersonService implements IPersonService {
             }
         }
         return  personInfoCollection;
+    }
+
+    @Override
+    public List<Person> getListPersons() {
+        return dataRepository.database.getPersons();
     }
 }
 

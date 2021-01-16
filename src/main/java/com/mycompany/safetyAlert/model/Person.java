@@ -13,6 +13,20 @@ public class Person {
     private String phone;
     private  String email;
 
+    public Person() {
+    // Constructeur vide
+    }
+
+    public Person(@NotBlank String firstName, @NotBlank String lastName, String address, String city, String zip, String phone, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.city = city;
+        this.zip = zip;
+        this.phone = phone;
+        this.email = email;
+    }
+
     @Override // 2 personnes sont identiques si elles ont le même nom & prénom
     public int hashCode() {
         final int prime = 31;

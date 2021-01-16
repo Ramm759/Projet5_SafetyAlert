@@ -11,6 +11,17 @@ public class Medicalrecord {
     private List<String> medications = new ArrayList<String>();
     private List<String> allergies = new ArrayList<String>();
 
+    public Medicalrecord() {
+    }
+
+    public Medicalrecord(String firstName, String lastName, String birthdate, List<String> medications, List<String> allergies) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthdate = birthdate;
+        this.medications = medications;
+        this.allergies = allergies;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

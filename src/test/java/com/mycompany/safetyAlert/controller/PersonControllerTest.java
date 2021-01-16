@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 import com.mycompany.safetyAlert.dao.PersonDaoImpl;
 import com.mycompany.safetyAlert.exceptions.DataAlreadyExistException;
+import com.mycompany.safetyAlert.exceptions.DataNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
@@ -117,6 +118,8 @@ public class PersonControllerTest {
     @Test
     void updatePersonWhenPersonNotExist() throws Exception {
         // GIVEN
+        // On courrtcircuite l'appel de l'exeption
+        Mockito.doThrow(DataNotFoundException.class).when(personDao).updatePerson(Mockito.any());
         ObjectMapper obm = new ObjectMapper();
         ObjectNode jsonPerson = obm.createObjectNode(); // on prépare le Json vide
         jsonPerson.set("firstName", TextNode.valueOf(firstnameTest));
@@ -127,4 +130,52 @@ public class PersonControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.put("/person").contentType(MediaType.APPLICATION_JSON).content(jsonPerson.toString())).andExpect(MockMvcResultMatchers.status().isNotFound());
 
     }
+
+    // Suppression des personnes
+    @Test
+    void deletePersonValid() throws Exception {
+        // GIVEN
+        ObjectMapper obm = new ObjectMapper();
+        ObjectNode jsonPerson = obm.createObjectNode(); // on prépare le Json vide
+        jsonPerson.set("firstName", TextNode.valueOf(firstnameTest));
+        jsonPerson.set("lastName", TextNode.valueOf(lastnameTest));
+
+        // WHEN
+
+        // THEN
+
+        mockMvc.perform(MockMvcRequestBuilders.delete("/person").contentType(MediaType.APPLICATION_JSON).content(jsonPerson.toString())).andExpect(MockMvcResultMatchers.status().isResetContent());
+
+    }
+
+    @Test
+    void deletePersonInvalid() throws Exception {
+        // GIVEN
+        ObjectMapper obm = new ObjectMapper();
+        ObjectNode jsonPerson = obm.createObjectNode(); // on prépare le Json vide
+        jsonPerson.set("firstName", TextNode.valueOf(firstnameTest));
+        jsonPerson.set("lastName", TextNode.valueOf(""));
+        // WHEN
+
+        // THEN
+        mockMvc.perform(MockMvcRequestBuilders.delete("/person").contentType(MediaType.APPLICATION_JSON).content(jsonPerson.toString())).andExpect(MockMvcResultMatchers.status().isBadRequest());
+    }
+
+    @Test
+    void deletePersonWhenPersonNotExist() throws Exception {
+        // GIVEN
+        // On courrtcircuite l'appel de l'exeption
+        Mockito.doThrow(DataNotFoundException.class).when(personDao).deletePerson((Mockito.any()));
+
+        ObjectMapper obm = new ObjectMapper();
+        ObjectNode jsonPerson = obm.createObjectNode(); // on prépare le Json vide
+        jsonPerson.set("firstName", TextNode.valueOf(firstnameTest));
+        jsonPerson.set("lastName", TextNode.valueOf(lastnameTest));
+        // WHEN
+
+        // THEN
+        mockMvc.perform(MockMvcRequestBuilders.delete("/person").contentType(MediaType.APPLICATION_JSON).content(jsonPerson.toString())).andExpect(MockMvcResultMatchers.status().isNotFound());
+
+    }
 }
+
