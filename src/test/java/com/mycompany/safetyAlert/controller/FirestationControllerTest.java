@@ -56,13 +56,14 @@ public class FirestationControllerTest {
         // GIVEN
         ObjectMapper obm = new ObjectMapper();
         ObjectNode jsonFirestation = obm.createObjectNode(); // on prépare le Json vide
-        jsonFirestation.set("address", TextNode.valueOf(""));
+        jsonFirestation.set("address", TextNode.valueOf(addressTest));
         jsonFirestation.set("station", TextNode.valueOf(""));
 
         // WHEN
 
         // THEN
         mockMvc.perform(MockMvcRequestBuilders.post("/firestation").contentType(MediaType.APPLICATION_JSON).content(jsonFirestation.toString())).andExpect(MockMvcResultMatchers.status().isBadRequest());
+
     }
 
     @Test
@@ -80,7 +81,6 @@ public class FirestationControllerTest {
 
         // THEN
         mockMvc.perform(MockMvcRequestBuilders.post("/firestation").contentType(MediaType.APPLICATION_JSON).content(jsonFirestation.toString())).andExpect(MockMvcResultMatchers.status().isConflict());
-
     }
 
     // Modification des casernes

@@ -3,7 +3,7 @@ package com.mycompany.safetyAlert.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
-import com.mycompany.safetyAlert.dao.PersonDaoImpl;
+import com.mycompany.safetyAlert.dao.MedicalrecordDaoImpl;
 import com.mycompany.safetyAlert.exceptions.DataAlreadyExistException;
 import com.mycompany.safetyAlert.exceptions.DataNotFoundException;
 import org.junit.jupiter.api.Test;
@@ -19,23 +19,35 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class PersonControllerTest {
+public class MedicalrecordControllerTest {
     @Autowired
     // MockMvc est un module de SpringTest permettant de simplifier la création de tests Rest
     MockMvc mockMvc;
 
     @MockBean
-    PersonDaoImpl personDao;
+    MedicalrecordDaoImpl medicalrecordDao;
 
     String firstnameTest = "Marc";
     String lastnameTest = "Dupont";
+    String birthdate = "12/06/1975";
 
-    // Création des personnes
+    List<String> medications = new ArrayList<String>();
+       medications.add("medication1");
+       medications.add("medication2");
+
+
+    List<String> allergies = new ArrayList<String>();
+
+
+    // Création des Medicalrecord
     @Test
-    void createPersonValid() throws Exception {
+    void createMedicalrecordValid() throws Exception {
         // GIVEN
         ObjectMapper obm = new ObjectMapper();
         ObjectNode jsonPerson = obm.createObjectNode(); // on prépare le Json vide
@@ -45,12 +57,12 @@ public class PersonControllerTest {
         // WHEN
 
         // THEN
-        mockMvc.perform(MockMvcRequestBuilders.post("/person").contentType(MediaType.APPLICATION_JSON).content(jsonPerson.toString())).andExpect(MockMvcResultMatchers.status().isCreated());
+        mockMvc.perform(MockMvcRequestBuilders.post("/medicalrecord").contentType(MediaType.APPLICATION_JSON).content(jsonPerson.toString())).andExpect(MockMvcResultMatchers.status().isCreated());
 
     }
 
     @Test
-    void createPersonInvalid() throws Exception {
+    void createMedicalrecordInvalid() throws Exception {
         // GIVEN
         ObjectMapper obm = new ObjectMapper();
         ObjectNode jsonPerson = obm.createObjectNode(); // on prépare le Json vide
@@ -59,14 +71,14 @@ public class PersonControllerTest {
         // WHEN
 
         // THEN
-        mockMvc.perform(MockMvcRequestBuilders.post("/person").contentType(MediaType.APPLICATION_JSON).content(jsonPerson.toString())).andExpect(MockMvcResultMatchers.status().isBadRequest());
+        mockMvc.perform(MockMvcRequestBuilders.post("/medicalrecord").contentType(MediaType.APPLICATION_JSON).content(jsonPerson.toString())).andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
     @Test
-    void createPersonWhenPersonAlreadyExist() throws Exception {
+    void createMedicalrecordWhenMedicalrecordAlreadyExist() throws Exception {
         // GIVEN
         // provoque l'exception (le fichier Json utilisé en mémoire est vide)
-        Mockito.doThrow(DataAlreadyExistException.class).when(personDao).createPerson(Mockito.any());
+        Mockito.doThrow(DataAlreadyExistException.class).when(medicalrecordDao).createMedicalrecord(Mockito.any());
 
         ObjectMapper obm = new ObjectMapper();
         ObjectNode jsonPerson = obm.createObjectNode(); // on prépare le Json vide
@@ -75,13 +87,13 @@ public class PersonControllerTest {
         // WHEN
 
         // THEN
-        mockMvc.perform(MockMvcRequestBuilders.post("/person").contentType(MediaType.APPLICATION_JSON).content(jsonPerson.toString())).andExpect(MockMvcResultMatchers.status().isConflict());
+        mockMvc.perform(MockMvcRequestBuilders.post("/medicalrecord").contentType(MediaType.APPLICATION_JSON).content(jsonPerson.toString())).andExpect(MockMvcResultMatchers.status().isConflict());
 
     }
 
-    // Modification des personnes
+    // Modification des Medicalrecord
     @Test
-    void updatePersonValid() throws Exception {
+    void updateMedicalrecordValid() throws Exception {
         // GIVEN
         ObjectMapper obm = new ObjectMapper();
         ObjectNode jsonPerson = obm.createObjectNode(); // on prépare le Json vide
@@ -92,12 +104,12 @@ public class PersonControllerTest {
 
         // THEN
 
-        mockMvc.perform(MockMvcRequestBuilders.put("/person").contentType(MediaType.APPLICATION_JSON).content(jsonPerson.toString())).andExpect(MockMvcResultMatchers.status().isNoContent());
+        mockMvc.perform(MockMvcRequestBuilders.put("/medicalrecord").contentType(MediaType.APPLICATION_JSON).content(jsonPerson.toString())).andExpect(MockMvcResultMatchers.status().isNoContent());
 
     }
 
     @Test
-    void updatePersonInvalid() throws Exception {
+    void updateMedicalrecordInvalid() throws Exception {
         // GIVEN
         ObjectMapper obm = new ObjectMapper();
         ObjectNode jsonPerson = obm.createObjectNode(); // on prépare le Json vide
@@ -106,14 +118,14 @@ public class PersonControllerTest {
         // WHEN
 
         // THEN
-        mockMvc.perform(MockMvcRequestBuilders.put("/person").contentType(MediaType.APPLICATION_JSON).content(jsonPerson.toString())).andExpect(MockMvcResultMatchers.status().isBadRequest());
+        mockMvc.perform(MockMvcRequestBuilders.put("/medicalrecord").contentType(MediaType.APPLICATION_JSON).content(jsonPerson.toString())).andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
     @Test
-    void updatePersonWhenPersonNotExist() throws Exception {
+    void updateMedicalrecordWhenMedicalrecordNotExist() throws Exception {
         // GIVEN
         // On courtcircuite l'appel de l'exeption (le fichier Json utilisé en mémoire est vide)
-        Mockito.doThrow(DataNotFoundException.class).when(personDao).updatePerson(Mockito.any());
+        Mockito.doThrow(DataNotFoundException.class).when(medicalrecordDao).updateMedicalrecord(Mockito.any());
 
         ObjectMapper obm = new ObjectMapper();
         ObjectNode jsonPerson = obm.createObjectNode(); // on prépare le Json vide
@@ -122,13 +134,13 @@ public class PersonControllerTest {
         // WHEN
 
         // THEN
-        mockMvc.perform(MockMvcRequestBuilders.put("/person").contentType(MediaType.APPLICATION_JSON).content(jsonPerson.toString())).andExpect(MockMvcResultMatchers.status().isNotFound());
+        mockMvc.perform(MockMvcRequestBuilders.put("/medicalrecord").contentType(MediaType.APPLICATION_JSON).content(jsonPerson.toString())).andExpect(MockMvcResultMatchers.status().isNotFound());
 
     }
 
-    // Suppression des personnes
+    // Suppression des Medicalrecord
     @Test
-    void deletePersonValid() throws Exception {
+    void deleteMedicalrecordValid() throws Exception {
         // GIVEN
         ObjectMapper obm = new ObjectMapper();
         ObjectNode jsonPerson = obm.createObjectNode(); // on prépare le Json vide
@@ -139,12 +151,12 @@ public class PersonControllerTest {
 
         // THEN
 
-        mockMvc.perform(MockMvcRequestBuilders.delete("/person").contentType(MediaType.APPLICATION_JSON).content(jsonPerson.toString())).andExpect(MockMvcResultMatchers.status().isResetContent());
+        mockMvc.perform(MockMvcRequestBuilders.delete("/medicalrecord").contentType(MediaType.APPLICATION_JSON).content(jsonPerson.toString())).andExpect(MockMvcResultMatchers.status().isResetContent());
 
     }
 
     @Test
-    void deletePersonInvalid() throws Exception {
+    void deleteMedicalrecordInvalid() throws Exception {
         // GIVEN
         ObjectMapper obm = new ObjectMapper();
         ObjectNode jsonPerson = obm.createObjectNode(); // on prépare le Json vide
@@ -153,14 +165,14 @@ public class PersonControllerTest {
         // WHEN
 
         // THEN
-        mockMvc.perform(MockMvcRequestBuilders.delete("/person").contentType(MediaType.APPLICATION_JSON).content(jsonPerson.toString())).andExpect(MockMvcResultMatchers.status().isBadRequest());
+        mockMvc.perform(MockMvcRequestBuilders.delete("/medicalrecord").contentType(MediaType.APPLICATION_JSON).content(jsonPerson.toString())).andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
     @Test
-    void deletePersonWhenPersonNotExist() throws Exception {
+    void deleteMedicalrecordWhenvNotExist() throws Exception {
         // GIVEN
         // On courrtcircuite l'appel de l'exeption
-        Mockito.doThrow(DataNotFoundException.class).when(personDao).deletePerson((Mockito.any()));
+        Mockito.doThrow(DataNotFoundException.class).when(medicalrecordDao).deleteMedicalrecord((Mockito.any()));
 
         ObjectMapper obm = new ObjectMapper();
         ObjectNode jsonPerson = obm.createObjectNode(); // on prépare le Json vide
@@ -169,7 +181,7 @@ public class PersonControllerTest {
         // WHEN
 
         // THEN
-        mockMvc.perform(MockMvcRequestBuilders.delete("/person").contentType(MediaType.APPLICATION_JSON).content(jsonPerson.toString())).andExpect(MockMvcResultMatchers.status().isNotFound());
+        mockMvc.perform(MockMvcRequestBuilders.delete("/medicalrecord").contentType(MediaType.APPLICATION_JSON).content(jsonPerson.toString())).andExpect(MockMvcResultMatchers.status().isNotFound());
 
     }
 }
