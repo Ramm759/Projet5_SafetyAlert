@@ -38,8 +38,8 @@ public class MedicalrecordControllerTest {
     String birthdate = "12/06/1975";
 
     List<String> medications = new ArrayList<String>();
-       medications.add("medication1");
-       medications.add("medication2");
+       //medications.add("medication1");
+       //medications.add("medication2");
 
 
     List<String> allergies = new ArrayList<String>();
