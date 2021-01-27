@@ -19,10 +19,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 
@@ -58,7 +60,7 @@ public class PersonServiceTest {
     Medicalrecord mrDupuis = new Medicalrecord("Alain", "DUPUIS", "03/06/1989", medication, allergies);
 
     @Test
-    public void createExistingPersonTest()throws Exception{
+    public void createExistingPersonTest() throws Exception {
         // GIVEN
         List<Person> persons = new ArrayList<>();
         persons.add(dupond);
@@ -70,16 +72,15 @@ public class PersonServiceTest {
         try {
             Assertions.assertFalse(personServiceTest.createPerson(dupond));
             // On vérifie le nombre d'appel au service (0)
-            verify(personServiceDaoTest,Mockito.times(0)).createPerson(any());
-        }
-        catch (DataAlreadyExistException daee) {
-            assert(daee.getMessage().contains("existe déjà."));
+            verify(personServiceDaoTest, Mockito.times(0)).createPerson(any());
+        } catch (DataAlreadyExistException daee) {
+            assert (daee.getMessage().contains("existe déjà."));
         }
 
     }
 
     @Test
-    public void createNonExistingPersonTest()throws Exception{
+    public void createNonExistingPersonTest() throws Exception {
         // GIVEN
         List<Person> persons = new ArrayList<>();
 
@@ -88,12 +89,12 @@ public class PersonServiceTest {
 
         // THEN
         Assertions.assertTrue(personServiceTest.createPerson(dupond));
-        verify(personServiceDaoTest,Mockito.times(1)).createPerson(dupond);
+        verify(personServiceDaoTest, Mockito.times(1)).createPerson(dupond);
 
     }
 
     @Test
-    public void updateExistingPersonTest()throws Exception{
+    public void updateExistingPersonTest() throws Exception {
         // GIVEN
 
         // WHEN
@@ -101,70 +102,126 @@ public class PersonServiceTest {
 
         // THEN
         Assertions.assertTrue(personServiceTest.updatePerson(dupond));
-        verify(personServiceDaoTest,Mockito.times(1)).updatePerson(dupond);
+        verify(personServiceDaoTest, Mockito.times(1)).updatePerson(dupond);
     }
 
     @Test
-    public void updateNonExistingPersonTest()throws Exception{
+    public void updateNonExistingPersonTest() throws Exception {
+        //GIVEN
 
-    }
+        // WHEN
+        Mockito.when(personServiceDaoTest.updatePerson(any(Person.class))).thenReturn(false);
 
-    @Test
-    public void deleteExistingPersonTest()throws Exception{
+        //THEN
+        try {
+            Assertions.assertTrue(personServiceTest.updatePerson(dupond));
+            verify(personServiceDaoTest, Mockito.times(0)).updatePerson(dupond);
 
-    }
+        } catch (DataNotFoundException dnfe) {
+            assert (dnfe.getMessage().contains("n'existe pas"));
+        }
 
-    @Test
-    public void deleteNonExistingPersonTest()throws Exception{
-
-    }
-
-    @Test
-    public void getPersonTest()throws Exception{
-
-    }
-
-    @Test
-    public void getValidCommunityEmailTest()throws Exception{
 
     }
 
     @Test
-    public void getInvalidCommunityEmailTest()throws Exception{
+    public void deleteExistingPersonTest() throws Exception {
+        // GIVEN
+
+        // WHEN
+        Mockito.when(personServiceDaoTest.deletePerson(any(Person.class))).thenReturn(true);
+
+        // THEN
+        Assertions.assertTrue(personServiceTest.deletePerson(dupond));
+        verify(personServiceDaoTest, Mockito.times(1)).deletePerson(dupond);
 
     }
 
     @Test
-    public void getEmptyCityCommunityEmailTest()throws Exception{
+    public void deleteNonExistingPersonTest() throws Exception {
+        //GIVEN
+
+        // WHEN
+        Mockito.when(personServiceDaoTest.deletePerson(any(Person.class))).thenReturn(false);
+
+        //THEN
+        try {
+            Assertions.assertTrue(personServiceTest.deletePerson(dupond));
+            verify(personServiceDaoTest, Mockito.times(0)).deletePerson(dupond);
+
+        } catch (DataNotFoundException dnfe) {
+            assert (dnfe.getMessage().contains("n'existe pas"));
+        }
+    }
+
+    @Test
+    public void getPersonTest() throws Exception {
+        // GIVEN
+        List<Person> persons = new ArrayList<>();
+        persons.add(dupond);
+        persons.add(dupuis);
+
+        // WHEN
+        Mockito.when(personService.getListPersons()).thenReturn(persons);
+
+        // THEN
+        assertThat(personService.getListPersons().size()).isEqualTo(2);
+        verify(personService, Mockito.times(1)).getListPersons();
 
     }
 
     @Test
-    public void getValidPersonInfoTest()throws Exception{
+    public void getValidCommunityEmailTest() throws Exception {
+        // GIVEN
+        List<Person> persons = new ArrayList<>();
+        persons.add(dupond);
+
+        // WHEN
+        Mockito.when(personService.getListPersons()).thenReturn(persons);
+
+        // THEN
+        assertThat(personService.getListPersons().size()).isEqualTo(2);
+        verify(personService, Mockito.times(1)).getListPersons();
 
     }
 
     @Test
-    public void getInvalidPersonInfoTest()throws Exception{
+    public void getInvalidCommunityEmailTest() throws Exception {
 
     }
 
     @Test
-    public void getEmptyPersonInfoTest()throws Exception{
+    public void getEmptyCityCommunityEmailTest() throws Exception {
 
     }
 
     @Test
-    public void getValidChildByAddress()throws Exception{
-
-    }
-    @Test
-    public void getInvalidChildByAddress()throws Exception{
+    public void getValidPersonInfoTest() throws Exception {
 
     }
 
     @Test
-    public void getEmptyChildByAddress()throws Exception{
+    public void getInvalidPersonInfoTest() throws Exception {
+
+    }
+
+    @Test
+    public void getEmptyPersonInfoTest() throws Exception {
+
+    }
+
+    @Test
+    public void getValidChildByAddress() throws Exception {
+
+    }
+
+    @Test
+    public void getInvalidChildByAddress() throws Exception {
+
+    }
+
+    @Test
+    public void getEmptyChildByAddress() throws Exception {
 
     }
 
