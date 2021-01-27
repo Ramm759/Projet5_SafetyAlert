@@ -1,11 +1,14 @@
 package com.mycompany.safetyAlert.model;
 
+import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class Medicalrecord {
+    @NotBlank
     private String firstName;
+    @NotBlank
     private String lastName;
     private String birthdate;
     private List<String> medications = new ArrayList<String>();

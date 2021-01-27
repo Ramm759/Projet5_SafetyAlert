@@ -39,7 +39,7 @@ public class PersonController {
     }
 
     @GetMapping(path = "firestation")
-    public Collection<PersonInfoWithMinor> getPersonsBystationNumber(@RequestParam int stationNumber) {
+    public Collection<PersonInfoWithMinor> getPersonsBystationNumber(@RequestParam String stationNumber) {
         return personService.getPersonInfo(stationNumber);
     }
 
@@ -49,7 +49,7 @@ public class PersonController {
     }
 
     @GetMapping(path = "phoneAlert")
-    public Collection<String> getCommunityPhone(@RequestParam int firestation) {
+    public Collection<String> getCommunityPhone(@RequestParam String firestation) {
         return personService.getCommunityPhone(firestation);
     }
 
@@ -59,7 +59,7 @@ public class PersonController {
     }
 
     @GetMapping(path = "flood/stations")
-    public Collection<PersonInfoForFlood> getCommunityByIdStation(@RequestParam int[] stations){
+    public Collection<PersonInfoForFlood> getCommunityByIdStation(@RequestParam String[] stations){
         return personService.getPersonnsByIdStation(stations);
     }
 

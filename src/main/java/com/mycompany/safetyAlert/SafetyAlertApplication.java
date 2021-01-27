@@ -11,10 +11,6 @@ public class SafetyAlertApplication {
     public static void main(String[] args) {
         SpringApplication.run(SafetyAlertApplication.class, args);
 
-        ArrayList<String> medications = new ArrayList<String>();
-        medications.add("medication1");
-        medications.add("medication2");
-
     }
 
 }

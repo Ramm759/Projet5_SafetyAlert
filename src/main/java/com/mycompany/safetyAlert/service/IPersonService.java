@@ -7,12 +7,12 @@ import java.util.Collection;
 import java.util.List;
 
 public interface IPersonService {
-    Collection<PersonInfoWithMinor> getPersonInfo(int stationNumber);
+    Collection<PersonInfoWithMinor> getPersonInfo(String stationNumber);
     Collection<PersonInfoForChildAlert> getChildrenByAddress(String address);
     Collection<String> getCommunityEmail(String city);
-    Collection<String> getCommunityPhone(int stationNumber);
+    Collection<String> getCommunityPhone(String stationNumber);
     Collection<PersonInfoWithoutPhone> getPersonInfo(String lastName, String firstName);
     Collection<PersonInfoWithFirestationNb> getPersonnsByAdress (String address);
-    Collection<PersonInfoForFlood> getPersonnsByIdStation(int[] idStationList);
+    Collection<PersonInfoForFlood> getPersonnsByIdStation(String[] idStationList);
     List<Person> getListPersons();
 }

@@ -17,12 +17,8 @@ public class PersonService implements IPersonService {
     @Autowired
     private DataRepository dataRepository;
 
-
-
-
-
     @Override
-    public Collection<PersonInfoWithMinor> getPersonInfo(int stationNumber) {
+    public Collection<PersonInfoWithMinor> getPersonInfo(String stationNumber) {
         Collection<PersonInfoWithMinor> personInfoCollection = new ArrayList<>();
         int nbMineurs = 0;
         int nbMajeurs = 0;
@@ -90,7 +86,7 @@ public class PersonService implements IPersonService {
     }
 
     @Override
-    public Collection<String> getCommunityPhone(int stationNumber) {
+    public Collection<String> getCommunityPhone(String stationNumber) {
         Collection<String> collectionPhones = new HashSet<>();
 
         // Pour chaque adresse correspondant à stationNumber
@@ -163,12 +159,12 @@ public class PersonService implements IPersonService {
     }
 
     @Override
-    public Collection<PersonInfoForFlood> getPersonnsByIdStation(int[] idStationList) {
+    public Collection<PersonInfoForFlood> getPersonnsByIdStation(String[] idStationList) {
         int nbMineurs = 0;
         int nbMajeurs = 0;
         Collection<PersonInfoForFlood> personInfoCollection = new ArrayList<>();
 
-        for (int idStation : idStationList) {
+        for (String idStation : idStationList) {
 
             // Pour chaque adresse correspondant à stationNumber
             for (String address : dataRepository.getAddressByIdStation(idStation)) {

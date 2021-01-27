@@ -103,8 +103,8 @@ public class DataRepository {
         return personCollection;
     }
 
-    public int getStationNumber(String address) {
-        int stationNumber = 0;
+    public String getStationNumber(String address) {
+        String stationNumber = "";
         for (Firestation firestation : database.getFirestations()) {
             if (firestation.getAddress().equals(address)) {
                 stationNumber = firestation.getStation();
@@ -117,10 +117,10 @@ public class DataRepository {
      * @param idStation
      * @return collection d'adresses dépendant de idStation
      */
-    public Collection<String> getAddressByIdStation(int idStation) {
+    public Collection<String> getAddressByIdStation(String idStation) {
         Collection<String> addressCollection = new ArrayList<>();
         for (Firestation firestation : database.getFirestations()) {
-            if (firestation.getStation() == idStation) {
+            if (firestation.getStation().equalsIgnoreCase(idStation)) {
                 addressCollection.add(firestation.getAddress());
             }
         }

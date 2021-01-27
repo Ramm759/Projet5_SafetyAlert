@@ -1,22 +1,25 @@
 package com.mycompany.safetyAlert.model;
 
+import javax.validation.constraints.NotBlank;
 import java.util.Objects;
 
 public class Firestation {
+    @NotBlank
     private String address;
-    private int station;
+    @NotBlank
+    private String station;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Firestation)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         Firestation that = (Firestation) o;
-        return getStation() == that.getStation() && Objects.equals(getAddress(), that.getAddress());
+        return address.equals(that.address) && station.equals(that.station);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getAddress(), getStation());
+        return Objects.hash(address, station);
     }
 
     public String getAddress() {
@@ -27,11 +30,11 @@ public class Firestation {
         this.address = address;
     }
 
-    public int getStation() {
+    public String getStation() {
         return station;
     }
 
-    public void setStation(int station) {
+    public void setStation(String station) {
         this.station = station;
     }
 }

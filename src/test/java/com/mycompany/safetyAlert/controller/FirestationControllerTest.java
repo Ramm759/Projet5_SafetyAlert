@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.node.TextNode;
 import com.mycompany.safetyAlert.dao.FirestationDaoImpl;
 import com.mycompany.safetyAlert.dao.PersonDaoImpl;
 import com.mycompany.safetyAlert.exceptions.DataAlreadyExistException;
+import com.mycompany.safetyAlert.exceptions.DataNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
@@ -30,8 +31,8 @@ public class FirestationControllerTest {
     @MockBean
     FirestationDaoImpl firestationDao;
 
-    String addressTest = " 1 rue Verte";
-    int stationNumberTest = 9;
+    String addressTest = "1 rue Verte";
+    String stationNumberTest = "9";
 
     // Création des casernes
 
@@ -41,7 +42,7 @@ public class FirestationControllerTest {
         ObjectMapper obm = new ObjectMapper();
         ObjectNode jsonFirestation = obm.createObjectNode(); // on prépare le Json vide
         jsonFirestation.set("address", TextNode.valueOf(addressTest));
-        jsonFirestation.set("station", TextNode.valueOf(String.valueOf(stationNumberTest)));
+        jsonFirestation.set("station", TextNode.valueOf(stationNumberTest));
 
         // WHEN
 
@@ -75,7 +76,7 @@ public class FirestationControllerTest {
         ObjectMapper obm = new ObjectMapper();
         ObjectNode jsonFirestation = obm.createObjectNode(); // on prépare le Json vide
         jsonFirestation.set("address", TextNode.valueOf(addressTest));
-        jsonFirestation.set("station", TextNode.valueOf(String.valueOf(stationNumberTest)));
+        jsonFirestation.set("station", TextNode.valueOf(stationNumberTest));
 
         // WHEN
 
@@ -90,7 +91,7 @@ public class FirestationControllerTest {
         ObjectMapper obm = new ObjectMapper();
         ObjectNode jsonFirestation = obm.createObjectNode(); // on prépare le Json vide
         jsonFirestation.set("address", TextNode.valueOf(addressTest));
-        jsonFirestation.set("station", TextNode.valueOf(String.valueOf(stationNumberTest)));
+        jsonFirestation.set("station", TextNode.valueOf(stationNumberTest));
 
         // WHEN
 
@@ -117,15 +118,64 @@ public class FirestationControllerTest {
     @Test
     void updateFirestationWhenFirestationNotExist() throws Exception {
         // GIVEN
+        Mockito.doThrow(DataNotFoundException.class).when(firestationDao).updateFirestation(Mockito.any());
+
         ObjectMapper obm = new ObjectMapper();
         ObjectNode jsonFirestation = obm.createObjectNode(); // on prépare le Json vide
         jsonFirestation.set("address", TextNode.valueOf(addressTest));
-        jsonFirestation.set("station", TextNode.valueOf(String.valueOf(stationNumberTest)));
+        jsonFirestation.set("station", TextNode.valueOf(stationNumberTest));
 
         // WHEN
 
         // THEN
         mockMvc.perform(MockMvcRequestBuilders.put("/firestation").contentType(MediaType.APPLICATION_JSON).content(jsonFirestation.toString())).andExpect(MockMvcResultMatchers.status().isNotFound());
+
+    }
+
+    // Suppression des casernes
+    @Test
+    void deleteFirestationValid() throws Exception {
+        // GIVEN
+        ObjectMapper obm = new ObjectMapper();
+        ObjectNode jsonFirestation = obm.createObjectNode(); // on prépare le Json vide
+        jsonFirestation.set("address", TextNode.valueOf(addressTest));
+        jsonFirestation.set("station", TextNode.valueOf(stationNumberTest));
+
+        // WHEN
+
+        // THEN
+
+        mockMvc.perform(MockMvcRequestBuilders.delete("/firestation").contentType(MediaType.APPLICATION_JSON).content(jsonFirestation.toString())).andExpect(MockMvcResultMatchers.status().isResetContent());
+
+    }
+
+    @Test
+    void deleteFirestationInvalid() throws Exception {
+        // GIVEN
+        ObjectMapper obm = new ObjectMapper();
+        ObjectNode jsonFirestation = obm.createObjectNode(); // on prépare le Json vide
+        jsonFirestation.set("address", TextNode.valueOf(addressTest));
+        jsonFirestation.set("station", TextNode.valueOf(""));
+        // WHEN
+
+        // THEN
+        mockMvc.perform(MockMvcRequestBuilders.delete("/firestation").contentType(MediaType.APPLICATION_JSON).content(jsonFirestation.toString())).andExpect(MockMvcResultMatchers.status().isBadRequest());
+    }
+
+    @Test
+    void deleteFirestationWhenFirestationNotExist() throws Exception {
+        // GIVEN
+        // On courrtcircuite l'appel de l'exeption
+        Mockito.doThrow(DataNotFoundException.class).when(firestationDao).deleteFirestation((Mockito.any()));
+
+        ObjectMapper obm = new ObjectMapper();
+        ObjectNode jsonFirestation = obm.createObjectNode(); // on prépare le Json vide
+        jsonFirestation.set("address", TextNode.valueOf(addressTest));
+        jsonFirestation.set("station", TextNode.valueOf(stationNumberTest));
+        // WHEN
+
+        // THEN
+        mockMvc.perform(MockMvcRequestBuilders.delete("/firestation").contentType(MediaType.APPLICATION_JSON).content(jsonFirestation.toString())).andExpect(MockMvcResultMatchers.status().isNotFound());
 
     }
 }

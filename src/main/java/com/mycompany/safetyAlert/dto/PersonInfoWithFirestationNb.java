@@ -10,7 +10,7 @@ public class PersonInfoWithFirestationNb {
     private int age;
     private List<String> medications = new ArrayList<String>();
     private List<String> allergies = new ArrayList<String>();
-    private int firestationNb;
+    private String firestationNb;
 
     public String getFirstName() {
         return firstName;
@@ -48,11 +48,11 @@ public class PersonInfoWithFirestationNb {
         return medications;
     }
 
-    public int getFirestationNb() {
+    public String getFirestationNb() {
         return firestationNb;
     }
 
-    public void setFirestationNb(int firestationNb) {
+    public void setFirestationNb(String firestationNb) {
         this.firestationNb = firestationNb;
     }
 

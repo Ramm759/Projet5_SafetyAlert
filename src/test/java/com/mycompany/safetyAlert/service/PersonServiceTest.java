@@ -1,11 +1,6 @@
 package com.mycompany.safetyAlert.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-
 import com.mycompany.safetyAlert.dao.MedicalrecordDaoImpl;
-import com.mycompany.safetyAlert.dao.PersonDao;
 import com.mycompany.safetyAlert.dao.PersonDaoImpl;
 import com.mycompany.safetyAlert.exceptions.DataAlreadyExistException;
 import com.mycompany.safetyAlert.exceptions.DataNotFoundException;
@@ -24,10 +19,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -78,8 +75,6 @@ public class PersonServiceTest {
         catch (DataAlreadyExistException daee) {
             assert(daee.getMessage().contains("existe déjà."));
         }
-
-
 
     }
 
