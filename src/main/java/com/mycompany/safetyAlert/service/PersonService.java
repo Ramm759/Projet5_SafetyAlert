@@ -1,6 +1,7 @@
 package com.mycompany.safetyAlert.service;
 
 import com.mycompany.safetyAlert.dto.*;
+import com.mycompany.safetyAlert.exceptions.InvalidArgumentException;
 import com.mycompany.safetyAlert.model.Medicalrecord;
 import com.mycompany.safetyAlert.model.Person;
 import com.mycompany.safetyAlert.repository.DataRepository;
@@ -151,6 +152,10 @@ public class PersonService implements IPersonService {
     @Override
     public Collection<String> getCommunityEmail(String city) {
         Collection<String> collectionEmails = new HashSet<String>();
+
+        if (city.isEmpty()){
+            throw new InvalidArgumentException("La ville ne peut être vide");
+        }
 
         for (Person person : dataRepository.getPersonByCity(city)) {
             collectionEmails.add(person.getEmail());

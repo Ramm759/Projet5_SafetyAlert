@@ -2,11 +2,13 @@ package com.mycompany.safetyAlert.service;
 
 import com.mycompany.safetyAlert.dao.MedicalrecordDaoImpl;
 import com.mycompany.safetyAlert.dao.PersonDaoImpl;
+import com.mycompany.safetyAlert.dto.PersonInfoWithoutPhone;
 import com.mycompany.safetyAlert.exceptions.DataAlreadyExistException;
 import com.mycompany.safetyAlert.exceptions.DataNotFoundException;
 import com.mycompany.safetyAlert.exceptions.InvalidArgumentException;
 import com.mycompany.safetyAlert.model.Medicalrecord;
 import com.mycompany.safetyAlert.model.Person;
+import com.mycompany.safetyAlert.repository.DataRepository;
 import com.mycompany.safetyAlert.serviceDao.MedicalrecordServiceDao;
 import com.mycompany.safetyAlert.serviceDao.PersonServiceDao;
 import org.junit.jupiter.api.Assertions;
@@ -26,6 +28,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(SpringExtension.class)
@@ -46,18 +49,26 @@ public class PersonServiceTest {
     InvalidArgumentException invalidArgumentException;
     @MockBean
     PersonService personService;
+    @MockBean
+    DataRepository dataRepository;
 
+
+    List<String> medication = new ArrayList<>(Arrays.asList("a", "b", "c"));
+    List<String> allergies = new ArrayList<>(Arrays.asList("a", "b", "c"));
 
     Person dupond = new Person("Jacques", "DUPOND", "2 rue verte", "Lille", "59000", "2155455455", "toto@gmail.com");
     Person durant = new Person("Dominique", "DURANT", "2 rue verte", "Lille", "59000", "2155455455", "toto@gmail.com");
     Person dupuis = new Person("Alain", "DUPUIS", "2 rue verte", "Lille", "59000", "2155455455", "toto@gmail.com");
 
-    List<String> medication = new ArrayList<>(Arrays.asList("a", "b", "c"));
-    List<String> allergies = new ArrayList<>(Arrays.asList("a", "b", "c"));
+    PersonInfoWithoutPhone dupond2 = new PersonInfoWithoutPhone("Jacques", "DUPOND", "2 rue verte", 17 , "toto@gmail.com", medication, allergies);
+
 
     Medicalrecord mrDupond = new Medicalrecord("Jacques", "DUPOND", "03/06/1989", medication, allergies);
     Medicalrecord mrDurand = new Medicalrecord("Dominique", "DURANT", "03/06/1989", medication, allergies);
     Medicalrecord mrDupuis = new Medicalrecord("Alain", "DUPUIS", "03/06/1989", medication, allergies);
+
+    String cityOk = "Culver";
+    String cityKo = "Lille";
 
     @Test
     public void createExistingPersonTest() throws Exception {
@@ -120,8 +131,6 @@ public class PersonServiceTest {
         } catch (DataNotFoundException dnfe) {
             assert (dnfe.getMessage().contains("n'existe pas"));
         }
-
-
     }
 
     @Test
@@ -187,17 +196,53 @@ public class PersonServiceTest {
 
     @Test
     public void getInvalidCommunityEmailTest() throws Exception {
+        // GIVEN
+        List<String> emails = new ArrayList<String>();
+
+        // WHEN (any(String.class)) génere un String
+        Mockito.when(personService.getCommunityEmail(any(String.class))).thenReturn(emails);
+
+        // THEN
+        assertThat(personService.getCommunityEmail(cityKo).size()).isEqualTo(0);
+
 
     }
 
     @Test
     public void getEmptyCityCommunityEmailTest() throws Exception {
+        // GIVEN
+        List<String> emails = new ArrayList<String>();
+
+        // WHEN
+        Mockito.when(personService.getCommunityEmail(any(String.class))).thenReturn(emails);
+
+        // THEN
+        try {
+            assertThat(personService.getCommunityEmail("").size()).isEqualTo(0);
+        }
+        catch (InvalidArgumentException iae) {
+            assert (iae.getMessage().contains("ne peut etre vidddddde"));
+        }
 
     }
 
     @Test
     public void getValidPersonInfoTest() throws Exception {
+        // GIVEN
+        List<PersonInfoWithoutPhone> persons = new ArrayList<>();
+        List<PersonInfoWithoutPhone> personsTest = new ArrayList<>();
+        persons.add(dupond2);
 
+        List<Medicalrecord> medicalrecords = new ArrayList<>();
+        medicalrecords.add(mrDupond);
+
+        // WHEN
+        Mockito.when(dataRepository.getMedicalrecordByName(any(String.class), any(String.class))).thenReturn(mrDupond);
+        persons = (List<PersonInfoWithoutPhone>) personService.getPersonInfo(mrDupond.getLastName(), mrDupond.getFirstName());
+
+        // THEN
+        assertThat(personService.getPersonInfo(mrDupond.getLastName(), mrDupond.getFirstName())).isEqualTo(personsTest);
+        verify(dataRepository,Mockito.times(1)).getMedicalrecordByName(any(String.class),any(String.class));
     }
 
     @Test

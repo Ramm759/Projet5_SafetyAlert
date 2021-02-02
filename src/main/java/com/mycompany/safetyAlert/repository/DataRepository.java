@@ -33,8 +33,16 @@ public class DataRepository {
     public static Database database;
     private String DATA_JSON = "data.json";
 
+
+
     // On met à jour uniquement si commit = true (pas pour les tests)
     private boolean commit = true;
+
+    public boolean isCommit() {
+        return commit;
+    }
+
+
 
     public DataRepository() throws IOException {
         this.init();
