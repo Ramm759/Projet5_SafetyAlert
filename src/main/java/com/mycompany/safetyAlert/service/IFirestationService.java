@@ -1,8 +1,8 @@
-package com.mycompany.safetyAlert.dao;
+package com.mycompany.safetyAlert.service;
 
 import com.mycompany.safetyAlert.model.Firestation;
 
-public interface FirestationDao {
+public interface IFirestationService {
     boolean createFirestation (Firestation firestation);
     boolean deleteFirestation (Firestation firestation);
     boolean updateFirestation (Firestation firestation);

@@ -1,24 +1,22 @@
-package com.mycompany.safetyAlert.dao;
+package com.mycompany.safetyAlert.service;
 
 import com.mycompany.safetyAlert.exceptions.DataAlreadyExistException;
 import com.mycompany.safetyAlert.exceptions.DataNotFoundException;
-import com.mycompany.safetyAlert.model.Firestation;
 import com.mycompany.safetyAlert.model.Medicalrecord;
 import com.mycompany.safetyAlert.model.Person;
 import com.mycompany.safetyAlert.repository.DataRepository;
-import com.mycompany.safetyAlert.serviceDao.IFirestationService;
-import com.mycompany.safetyAlert.serviceDao.IMedicalrecordService;
+import com.mycompany.safetyAlert.serviceDao.IMedicalrecordServiceDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class MedicalrecordDaoImpl implements MedicalrecordDao {
+public class MedicalrecordService implements IMedicalrecordService {
 
     @Autowired
     DataRepository dataRepository;
 
     @Autowired
-    IMedicalrecordService medicalrecordService;
+    IMedicalrecordServiceDao medicalrecordService;
 
     @Override
     public boolean createMedicalrecord(Medicalrecord medicalrecord) {

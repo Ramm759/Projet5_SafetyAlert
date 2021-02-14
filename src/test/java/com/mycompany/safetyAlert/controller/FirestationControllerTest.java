@@ -3,8 +3,7 @@ package com.mycompany.safetyAlert.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
-import com.mycompany.safetyAlert.dao.FirestationDaoImpl;
-import com.mycompany.safetyAlert.dao.PersonDaoImpl;
+import com.mycompany.safetyAlert.service.FirestationService;
 import com.mycompany.safetyAlert.exceptions.DataAlreadyExistException;
 import com.mycompany.safetyAlert.exceptions.DataNotFoundException;
 import org.junit.jupiter.api.Test;
@@ -29,7 +28,7 @@ public class FirestationControllerTest {
     MockMvc mockMvc;
 
     @MockBean
-    FirestationDaoImpl firestationDao;
+    FirestationService firestationDao;
 
     String addressTest = "1 rue Verte";
     String stationNumberTest = "9";

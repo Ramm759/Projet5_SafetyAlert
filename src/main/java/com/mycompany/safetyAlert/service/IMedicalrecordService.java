@@ -1,4 +1,4 @@
-package com.mycompany.safetyAlert.serviceDao;
+package com.mycompany.safetyAlert.service;
 
 import com.mycompany.safetyAlert.model.Medicalrecord;
 

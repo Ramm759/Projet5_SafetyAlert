@@ -1,21 +1,21 @@
-package com.mycompany.safetyAlert.dao;
+package com.mycompany.safetyAlert.service;
 
 import com.mycompany.safetyAlert.exceptions.DataAlreadyExistException;
 import com.mycompany.safetyAlert.exceptions.DataNotFoundException;
 import com.mycompany.safetyAlert.model.Firestation;
 import com.mycompany.safetyAlert.repository.DataRepository;
-import com.mycompany.safetyAlert.serviceDao.IFirestationService;
+import com.mycompany.safetyAlert.serviceDao.IFirestationServiceDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class FirestationDaoImpl implements FirestationDao {
+public class FirestationService implements IFirestationService {
 
     @Autowired
     DataRepository dataRepository;
 
     @Autowired
-    IFirestationService firestationService;
+    IFirestationServiceDao firestationService;
 
     @Override
     public boolean createFirestation(Firestation firestation) {

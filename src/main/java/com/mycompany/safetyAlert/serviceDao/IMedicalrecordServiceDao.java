@@ -1,8 +1,8 @@
-package com.mycompany.safetyAlert.dao;
+package com.mycompany.safetyAlert.serviceDao;
 
 import com.mycompany.safetyAlert.model.Medicalrecord;
 
-public interface MedicalrecordDao {
+public interface IMedicalrecordServiceDao {
     boolean createMedicalrecord (Medicalrecord medicalrecord);
     boolean deleteMedicalrecord (Medicalrecord medicalrecord);
     boolean updateMedicalrecord (Medicalrecord medicalrecord);

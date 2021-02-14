@@ -3,7 +3,7 @@ package com.mycompany.safetyAlert.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
-import com.mycompany.safetyAlert.dao.PersonDaoImpl;
+import com.mycompany.safetyAlert.service.PersonService;
 import com.mycompany.safetyAlert.exceptions.DataAlreadyExistException;
 import com.mycompany.safetyAlert.exceptions.DataNotFoundException;
 import org.junit.jupiter.api.Test;
@@ -28,7 +28,7 @@ public class PersonControllerTest {
     MockMvc mockMvc;
 
     @MockBean
-    PersonDaoImpl personDao;
+    PersonService personDao;
 
     String firstnameTest = "Marc";
     String lastnameTest = "Dupont";

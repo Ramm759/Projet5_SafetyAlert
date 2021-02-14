@@ -1,8 +1,8 @@
 package com.mycompany.safetyAlert.controller;
 
-import com.mycompany.safetyAlert.dao.FirestationDao;
+import com.mycompany.safetyAlert.service.IFirestationService;
 import com.mycompany.safetyAlert.model.Firestation;
-import com.mycompany.safetyAlert.serviceDao.IFirestationService;
+import com.mycompany.safetyAlert.serviceDao.IFirestationServiceDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -13,10 +13,10 @@ import javax.validation.Valid;
 public class FirestationController {
 
     @Autowired
-    private IFirestationService firestationService;
+    private IFirestationServiceDao firestationService;
 
     @Autowired
-    private FirestationDao firestationDao;
+    private IFirestationService firestationDao;
 
     @PostMapping(path = "firestation")
     @ResponseStatus(HttpStatus.CREATED)

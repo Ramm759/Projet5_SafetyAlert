@@ -34,6 +34,25 @@ public class DataRepository {
     private String DATA_JSON = "data.json";
 
 
+    public List<Person> getAllPersons() {
+        return database.getPersons();
+    }
+    public List<Firestation> getListFirestation() {
+        return database.getFirestations();
+    }
+
+    public List<Medicalrecord> getAllMedicalRecord() {
+        return database.getMedicalrecords();
+    }
+
+
+    public static Database getDatabase() {
+        return database;
+    }
+
+    public static void setDatabase(Database database) {
+        DataRepository.database = database;
+    }
 
     // On met à jour uniquement si commit = true (pas pour les tests)
     private boolean commit = true;

@@ -1,24 +1,23 @@
 package com.mycompany.safetyAlert.controller;
 
-import com.mycompany.safetyAlert.dao.PersonDao;
+import com.mycompany.safetyAlert.service.IPersonService;
 import com.mycompany.safetyAlert.dto.*;
 import com.mycompany.safetyAlert.model.Person;
-import com.mycompany.safetyAlert.service.IPersonService;
+import com.mycompany.safetyAlert.serviceUtils.IPersonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.Collection;
 
 // On expose les Api Rest pour gérer les requêtes qui viennent d'un client web
 @RestController
 public class PersonController {
     @Autowired
-    private IPersonService personService;
+    private IPersonUtils personService;
     @Autowired
-    private PersonDao personDao;
+    private IPersonService personDao;
 
     @PostMapping(path = "person")
     @ResponseStatus(HttpStatus.CREATED)

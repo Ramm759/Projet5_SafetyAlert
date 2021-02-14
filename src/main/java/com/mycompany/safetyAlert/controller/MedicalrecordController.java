@@ -1,11 +1,8 @@
 package com.mycompany.safetyAlert.controller;
 
-import com.mycompany.safetyAlert.dao.FirestationDao;
-import com.mycompany.safetyAlert.dao.MedicalrecordDao;
-import com.mycompany.safetyAlert.model.Firestation;
+import com.mycompany.safetyAlert.service.IMedicalrecordService;
 import com.mycompany.safetyAlert.model.Medicalrecord;
-import com.mycompany.safetyAlert.serviceDao.IFirestationService;
-import com.mycompany.safetyAlert.serviceDao.IMedicalrecordService;
+import com.mycompany.safetyAlert.serviceDao.IMedicalrecordServiceDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -16,10 +13,10 @@ import javax.validation.Valid;
 public class MedicalrecordController {
 
     @Autowired
-    private IMedicalrecordService medicalrecordService;
+    private IMedicalrecordServiceDao medicalrecordService;
 
     @Autowired
-    private MedicalrecordDao medicalrecordDao;
+    private IMedicalrecordService medicalrecordDao;
 
     @PostMapping(path = "medicalrecord")
     @ResponseStatus(HttpStatus.CREATED)

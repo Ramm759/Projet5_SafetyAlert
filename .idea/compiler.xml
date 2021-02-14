@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="safetyAlert" target="1.8" />
+      <module name="safetyAlert" target="11" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">

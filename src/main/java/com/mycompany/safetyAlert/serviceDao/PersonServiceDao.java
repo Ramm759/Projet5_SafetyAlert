@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class PersonServiceDao implements IPersonService {
+public class PersonServiceDao implements IPersonServiceDao {
     @Autowired
     DataRepository dataRepository;
 
