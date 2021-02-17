@@ -12,21 +12,21 @@ public class FirestationServiceDao implements IFirestationServiceDao {
 
     @Override
     public boolean createFirestation(Firestation firestation) {
-        dataRepository.database.getFirestations().add(firestation); // ajout en mémoire de la nouvelle caserne
+        dataRepository.getAllFirestations().add(firestation); // ajout en mémoire de la nouvelle caserne
         dataRepository.commit(); // écriture dans le fichier Json
         return true;
     }
 
     @Override
     public boolean deleteFirestation(Firestation firestation) {
-        boolean result = dataRepository.database.getFirestations().remove(firestation);
+        boolean result = dataRepository.getAllFirestations().remove(firestation);
         dataRepository.commit();
         return result;
     }
 
     @Override
     public boolean updateFirestation(Firestation firestation) {
-        if (dataRepository.database.getFirestations().remove(firestation)) {
+        if (dataRepository.getAllFirestations().remove(firestation)) {
             createFirestation(firestation);
             return true;
         }

@@ -25,13 +25,13 @@ public class MedicalrecordService implements IMedicalrecordService {
         person.setLastName(medicalrecord.getLastName());
         person.setFirstName(medicalrecord.getFirstName());
 
-        if (!dataRepository.database.getPersons().contains(person)){
+        if (!dataRepository.getAllPersons().contains(person)){
             throw new DataNotFoundException("La personne " + person.getLastName() +" " + person.getFirstName() + " n'existe pas");
         }
 
         else {
         // On vérifie que l'enregistrement n'existe pas dans la Dao
-        if ((!dataRepository.database.getMedicalrecords().contains(medicalrecord))) {
+        if ((!dataRepository.getAllMedicalRecord().contains(medicalrecord))) {
             medicalrecordService.createMedicalrecord(medicalrecord);
             return true;
         } else {

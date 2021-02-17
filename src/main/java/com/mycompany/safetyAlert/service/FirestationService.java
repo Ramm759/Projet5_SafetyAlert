@@ -20,7 +20,7 @@ public class FirestationService implements IFirestationService {
     @Override
     public boolean createFirestation(Firestation firestation) {
         // On vérifie que la caserne n'existe pas dans la Dao)
-        if (!dataRepository.database.getFirestations().contains(firestation)) {
+        if (!dataRepository.getAllFirestations().contains(firestation)) {
             firestationService.createFirestation(firestation);
             return true;
         } else {

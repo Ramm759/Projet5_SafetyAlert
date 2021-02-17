@@ -28,7 +28,7 @@ public class PersonControllerTest {
     MockMvc mockMvc;
 
     @MockBean
-    PersonService personDao;
+    PersonService personService;
 
     String firstnameTest = "Marc";
     String lastnameTest = "Dupont";
@@ -44,7 +44,7 @@ public class PersonControllerTest {
 
         // WHEN
 
-        // THEN
+        // THEN (on attend Is created)
         mockMvc.perform(MockMvcRequestBuilders.post("/person").contentType(MediaType.APPLICATION_JSON).content(jsonPerson.toString())).andExpect(MockMvcResultMatchers.status().isCreated());
 
     }
@@ -58,7 +58,7 @@ public class PersonControllerTest {
         jsonPerson.set("lastName", TextNode.valueOf(""));
         // WHEN
 
-        // THEN
+        // THEN (on attend bad request)
         mockMvc.perform(MockMvcRequestBuilders.post("/person").contentType(MediaType.APPLICATION_JSON).content(jsonPerson.toString())).andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
@@ -66,7 +66,7 @@ public class PersonControllerTest {
     void createPersonWhenPersonAlreadyExist() throws Exception {
         // GIVEN
         // provoque l'exception (le fichier Json utilisé en mémoire est vide)
-        Mockito.doThrow(DataAlreadyExistException.class).when(personDao).createPerson(Mockito.any());
+        Mockito.doThrow(DataAlreadyExistException.class).when(personService).createPerson(Mockito.any());
 
         ObjectMapper obm = new ObjectMapper();
         ObjectNode jsonPerson = obm.createObjectNode(); // on prépare le Json vide
@@ -74,7 +74,7 @@ public class PersonControllerTest {
         jsonPerson.set("lastName", TextNode.valueOf(lastnameTest));
         // WHEN
 
-        // THEN
+        // THEN ( on attend Is conflict)
         mockMvc.perform(MockMvcRequestBuilders.post("/person").contentType(MediaType.APPLICATION_JSON).content(jsonPerson.toString())).andExpect(MockMvcResultMatchers.status().isConflict());
 
     }
@@ -91,7 +91,6 @@ public class PersonControllerTest {
         // WHEN
 
         // THEN
-
         mockMvc.perform(MockMvcRequestBuilders.put("/person").contentType(MediaType.APPLICATION_JSON).content(jsonPerson.toString())).andExpect(MockMvcResultMatchers.status().isNoContent());
 
     }
@@ -113,7 +112,7 @@ public class PersonControllerTest {
     void updatePersonWhenPersonNotExist() throws Exception {
         // GIVEN
         // On courtcircuite l'appel de l'exeption (le fichier Json utilisé en mémoire est vide)
-        Mockito.doThrow(DataNotFoundException.class).when(personDao).updatePerson(Mockito.any());
+        Mockito.doThrow(DataNotFoundException.class).when(personService).updatePerson(Mockito.any());
 
         ObjectMapper obm = new ObjectMapper();
         ObjectNode jsonPerson = obm.createObjectNode(); // on prépare le Json vide
@@ -159,8 +158,8 @@ public class PersonControllerTest {
     @Test
     void deletePersonWhenPersonNotExist() throws Exception {
         // GIVEN
-        // On courrtcircuite l'appel de l'exeption
-        Mockito.doThrow(DataNotFoundException.class).when(personDao).deletePerson((Mockito.any()));
+        // On courtcircuite l'appel de l'exeption
+        Mockito.doThrow(DataNotFoundException.class).when(personService).deletePerson((Mockito.any()));
 
         ObjectMapper obm = new ObjectMapper();
         ObjectNode jsonPerson = obm.createObjectNode(); // on prépare le Json vide

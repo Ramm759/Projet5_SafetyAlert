@@ -1,7 +1,5 @@
 package com.mycompany.safetyAlert.serviceUtils;
 
-import com.mycompany.safetyAlert.service.MedicalrecordService;
-import com.mycompany.safetyAlert.service.PersonService;
 import com.mycompany.safetyAlert.dto.PersonInfoWithoutPhone;
 import com.mycompany.safetyAlert.exceptions.DataAlreadyExistException;
 import com.mycompany.safetyAlert.exceptions.DataNotFoundException;
@@ -9,6 +7,8 @@ import com.mycompany.safetyAlert.exceptions.InvalidArgumentException;
 import com.mycompany.safetyAlert.model.Medicalrecord;
 import com.mycompany.safetyAlert.model.Person;
 import com.mycompany.safetyAlert.repository.DataRepository;
+import com.mycompany.safetyAlert.service.MedicalrecordService;
+import com.mycompany.safetyAlert.service.PersonService;
 import com.mycompany.safetyAlert.serviceDao.MedicalrecordServiceDao;
 import com.mycompany.safetyAlert.serviceDao.PersonServiceDao;
 import org.junit.jupiter.api.Assertions;
@@ -22,14 +22,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(SpringExtension.class)
@@ -53,7 +51,6 @@ public class PersonServiceTest {
     @MockBean
     DataRepository dataRepository;
 
-
     List<String> medication = new ArrayList<>(Arrays.asList("a", "b", "c"));
     List<String> allergies = new ArrayList<>(Arrays.asList("a", "b", "c"));
 
@@ -61,8 +58,7 @@ public class PersonServiceTest {
     Person durant = new Person("Dominique", "DURANT", "2 rue verte", "Lille", "59000", "2155455455", "toto@gmail.com");
     Person dupuis = new Person("Alain", "DUPUIS", "2 rue verte", "Lille", "59000", "2155455455", "toto@gmail.com");
 
-    PersonInfoWithoutPhone dupond2 = new PersonInfoWithoutPhone("Jacques", "DUPOND", "2 rue verte", 17 , "toto@gmail.com", medication, allergies);
-
+    PersonInfoWithoutPhone dupond2 = new PersonInfoWithoutPhone("Jacques", "DUPOND", "2 rue verte", 17, "toto@gmail.com", medication, allergies);
 
     Medicalrecord mrDupond = new Medicalrecord("Jacques", "DUPOND", "03/06/1989", medication, allergies);
     Medicalrecord mrDurand = new Medicalrecord("Dominique", "DURANT", "03/06/1989", medication, allergies);
@@ -83,12 +79,12 @@ public class PersonServiceTest {
         // THEN
         try {
             Assertions.assertFalse(personServiceTest.createPerson(dupond));
+
+        } catch (DataAlreadyExistException daee) {
             // On vérifie le nombre d'appel au service (0)
             verify(personServiceDaoTest, Mockito.times(0)).createPerson(dupond);
-        } catch (DataAlreadyExistException daee) {
             assert (daee.getMessage().contains("existe déjà."));
         }
-
     }
 
     @Test
@@ -102,7 +98,6 @@ public class PersonServiceTest {
         // THEN
         Assertions.assertTrue(personServiceTest.createPerson(dupond));
         verify(personServiceDaoTest, Mockito.times(1)).createPerson(dupond);
-
     }
 
     @Test
@@ -144,7 +139,6 @@ public class PersonServiceTest {
         // THEN
         Assertions.assertTrue(personServiceTest.deletePerson(dupond));
         verify(personServiceDaoTest, Mockito.times(1)).deletePerson(dupond);
-
     }
 
     @Test
@@ -177,7 +171,6 @@ public class PersonServiceTest {
         // THEN
         assertThat(personUtils.getListPersons().size()).isEqualTo(2);
         verify(personUtils, Mockito.times(1)).getListPersons();
-
     }
 
     @Test
@@ -193,7 +186,6 @@ public class PersonServiceTest {
         // THEN
         assertThat(personUtils.getListPersons().size()).isEqualTo(2);
         verify(personUtils, Mockito.times(1)).getListPersons();
-
     }
 
     @Test
@@ -206,8 +198,6 @@ public class PersonServiceTest {
 
         // THEN
         assertThat(personUtils.getCommunityEmail(cityKo).size()).isEqualTo(0);
-
-
     }
 
     @Test
@@ -221,11 +211,9 @@ public class PersonServiceTest {
         // THEN
         try {
             assertThat(personUtils.getCommunityEmail("").size()).isEqualTo(0);
-        }
-        catch (InvalidArgumentException iae) {
+        } catch (InvalidArgumentException iae) {
             assert (iae.getMessage().contains("ne peut etre vidddddde"));
         }
-
     }
 
     @Test
@@ -245,11 +233,13 @@ public class PersonServiceTest {
 
         // THEN
         assertThat(personUtils.getPersonInfo(mrDupond.getLastName(), mrDupond.getFirstName())).isEqualTo(personsTest);
-        verify(dataRepository,Mockito.times(1)).getMedicalrecordByName(any(String.class),any(String.class));
+        verify(dataRepository, Mockito.times(1)).getMedicalrecordByName(any(String.class), any(String.class));
     }
 
     @Test
     public void getInvalidPersonInfoTest() throws Exception {
+        // GIVEN
+
 
     }
 

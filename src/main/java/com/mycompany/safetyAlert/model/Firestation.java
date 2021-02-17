@@ -9,6 +9,14 @@ public class Firestation {
     @NotBlank
     private String station;
 
+    public Firestation() {
+    }
+
+    public Firestation(@NotBlank String address, @NotBlank String station) {
+        this.address = address;
+        this.station = station;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -10,15 +10,14 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @AutoConfigureMockMvc
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
-class PersonServiceDaoTest {
 
-    Person durand = new Person("Durand", "Emile", "2 rue Verte", "Lille", "58962", "55555555", "toto@gmail.com");
+class PersonServiceDaoTest {
+    Person personTest = new Person("Durand", "Emile", "2 rue Verte", "Lille", "58962", "55555555", "toto@gmail.com");
 
     @Autowired
     PersonServiceDao personServiceDao;
@@ -34,25 +33,33 @@ class PersonServiceDaoTest {
 
     @Test
     void createPerson() {
-        assertThat(personServiceDao.createPerson(durand)).isTrue();
-        assertThat(dataRepository.getAllPersons().contains(durand)).isTrue();
-
+        // Est ce que la méthode renvoie True ?
+        assertThat(personServiceDao.createPerson(personTest)).isTrue();
+        // datarepository contient il le nouvel enregistrement ?
+        assertThat(dataRepository.getAllPersons().contains(personTest)).isTrue();
     }
 
     @Test
     void deletePerson() {
-        assertThat(personServiceDao.deletePerson(durand)).isFalse();
-        personServiceDao.createPerson(durand);
-        assertThat(dataRepository.getAllPersons().contains(durand)).isTrue();
-        assertThat(personServiceDao.deletePerson(durand)).isTrue();
-        assertThat(dataRepository.getAllPersons().contains(durand)).isFalse();
+        // L'enregistrement n'existe pas, la méthode doit renvoyer False
+        assertThat(personServiceDao.deletePerson(personTest)).isFalse();
+        // On cré l'enregistrement
+        personServiceDao.createPerson(personTest);
+        // On vérifie que l'enregistrement a bien été ajouté
+        assertThat(dataRepository.getAllPersons().contains(personTest)).isTrue();
+        // La méthode doit maintenant renvoyer True
+        assertThat(personServiceDao.deletePerson(personTest)).isTrue();
+        // On vérifie que l'enregistrement a bien été supprimé
+        assertThat(dataRepository.getAllPersons().contains(personTest)).isFalse();
     }
 
     @Test
     void updatePerson() {
-        assertThat(personServiceDao.updatePerson(durand)).isFalse();
-        personServiceDao.createPerson(durand);
-        assertThat(personServiceDao.updatePerson(durand)).isTrue();
-
+        // L'enregistrement n'existe pas, la méthode doit renvoyer False
+        assertThat(personServiceDao.updatePerson(personTest)).isFalse();
+        // On cré l'enregistrement
+        personServiceDao.createPerson(personTest);
+        // La méthode doit maintenant renvoyer True
+        assertThat(personServiceDao.updatePerson(personTest)).isTrue();
     }
 }

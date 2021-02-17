@@ -12,21 +12,21 @@ public class MedicalrecordServiceDao implements IMedicalrecordServiceDao {
 
     @Override
     public boolean createMedicalrecord(Medicalrecord medicalrecord) {
-        dataRepository.database.getMedicalrecords().add(medicalrecord); // ajout en mémoire
+        dataRepository.getAllMedicalRecord().add(medicalrecord); // ajout en mémoire
         dataRepository.commit(); // écriture dans le fichier Json
         return true;
     }
 
     @Override
     public boolean deleteMedicalrecord(Medicalrecord medicalrecord) {
-        boolean result = dataRepository.database.getMedicalrecords().remove(medicalrecord);
+        boolean result = dataRepository.getAllMedicalRecord().remove(medicalrecord);
         dataRepository.commit();
         return result;
     }
 
     @Override
     public boolean updateMedicalrecord(Medicalrecord medicalrecord) {
-        if (dataRepository.database.getMedicalrecords().remove(medicalrecord)) {
+        if (dataRepository.getAllMedicalRecord().remove(medicalrecord)) {
             createMedicalrecord(medicalrecord);
             return true;
         }

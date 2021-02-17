@@ -5,6 +5,7 @@ import com.mycompany.safetyAlert.exceptions.DataNotFoundException;
 import com.mycompany.safetyAlert.model.Person;
 import com.mycompany.safetyAlert.repository.DataRepository;
 import com.mycompany.safetyAlert.serviceDao.IPersonServiceDao;
+import com.mycompany.safetyAlert.serviceDao.PersonServiceDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +16,11 @@ public class PersonService implements IPersonService {
     DataRepository dataRepository;
 
     @Autowired
-    IPersonServiceDao personService;
+    PersonServiceDao personService;
 
     @Override
     public boolean createPerson(Person person) {
-        // On vérifie que la personne n'existe pas dans la Dao ( nom + prénom)
+        // On vérifie que la personne n'existe pas dans la Dao (nom + prénom)
         if (!dataRepository.getAllPersons().contains(person)) {
             personService.createPerson(person);
             return true;

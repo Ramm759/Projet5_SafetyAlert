@@ -12,21 +12,21 @@ public class PersonServiceDao implements IPersonServiceDao {
 
     @Override
     public boolean createPerson(Person person) {
-        dataRepository.database.getPersons().add(person); // ajout en mémoire de la nouvelle personne
+        dataRepository.getAllPersons().add(person); // ajout en mémoire de la nouvelle personne
         dataRepository.commit(); // écriture dans le fichier Json
         return true;
     }
-
     @Override
+
     public boolean deletePerson(Person person) {
-        boolean result = dataRepository.database.getPersons().remove(person);
+        boolean result = dataRepository.getAllPersons().remove(person);
         dataRepository.commit();
         return result;
     }
 
     @Override
     public boolean updatePerson(Person person) {
-        if (dataRepository.database.getPersons().remove(person)) {
+        if (dataRepository.getAllPersons().remove(person)) {
             createPerson(person);
             return true;
         }

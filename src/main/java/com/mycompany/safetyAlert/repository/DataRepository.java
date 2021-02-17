@@ -37,14 +37,13 @@ public class DataRepository {
     public List<Person> getAllPersons() {
         return database.getPersons();
     }
-    public List<Firestation> getListFirestation() {
+    public List<Firestation> getAllFirestations() {
         return database.getFirestations();
     }
 
     public List<Medicalrecord> getAllMedicalRecord() {
         return database.getMedicalrecords();
     }
-
 
     public static Database getDatabase() {
         return database;
