@@ -1,6 +1,6 @@
 package com.mycompany.safetyAlert.serviceDao;
 
-import com.mycompany.safetyAlert.model.Firestation;
+
 import com.mycompany.safetyAlert.repository.DataRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,12 +10,15 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import com.mycompany.safetyAlert.model.Firestation;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @AutoConfigureMockMvc
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
 class FirestationServiceDaoTest {
+
     Firestation firestationTest = new Firestation("Culver", "3");
 
     @Autowired

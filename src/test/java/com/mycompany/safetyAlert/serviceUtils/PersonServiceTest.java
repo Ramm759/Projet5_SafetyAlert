@@ -93,7 +93,7 @@ public class PersonServiceTest {
         List<Person> persons = new ArrayList<>();
 
         // WHEN
-        Mockito.when(personUtils.getListPersons()).thenReturn(persons);
+        Mockito.when(dataRepository.getAllPersons()).thenReturn(persons);
 
         // THEN
         Assertions.assertTrue(personServiceTest.createPerson(dupond));
@@ -122,9 +122,9 @@ public class PersonServiceTest {
         //THEN
         try {
             Assertions.assertTrue(personServiceTest.updatePerson(dupond));
-            verify(personServiceDaoTest, Mockito.times(0)).updatePerson(dupond);
 
         } catch (DataNotFoundException dnfe) {
+            verify(personServiceDaoTest, Mockito.times(1)).updatePerson(dupond);
             assert (dnfe.getMessage().contains("n'existe pas"));
         }
     }
@@ -151,9 +151,9 @@ public class PersonServiceTest {
         //THEN
         try {
             Assertions.assertTrue(personServiceTest.deletePerson(dupond));
-            verify(personServiceDaoTest, Mockito.times(0)).deletePerson(dupond);
 
         } catch (DataNotFoundException dnfe) {
+            verify(personServiceDaoTest, Mockito.times(1)).deletePerson(dupond);
             assert (dnfe.getMessage().contains("n'existe pas"));
         }
     }
