@@ -165,8 +165,7 @@ public class PersonUtils implements IPersonUtils {
 
     @Override
     public Collection<PersonInfoForFlood> getPersonnsByIdStation(String[] idStationList) {
-        int nbMineurs = 0;
-        int nbMajeurs = 0;
+
         Collection<PersonInfoForFlood> personInfoCollection = new ArrayList<>();
 
         for (String idStation : idStationList) {
@@ -184,10 +183,6 @@ public class PersonUtils implements IPersonUtils {
                     int age = dataRepository.calculateAge(medicalrecord.getBirthdate());
 
                     personInfoForFlood.setAge(age);
-
-                    if (age <= 18) {
-                        nbMineurs++;
-                    } else nbMajeurs++;
 
                     personInfoForFlood.setMedications(medicalrecord.getMedications());
                     personInfoForFlood.setAllergies(medicalrecord.getAllergies());

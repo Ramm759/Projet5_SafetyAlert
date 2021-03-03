@@ -4,7 +4,6 @@ import com.mycompany.safetyAlert.exceptions.DataAlreadyExistException;
 import com.mycompany.safetyAlert.exceptions.DataNotFoundException;
 import com.mycompany.safetyAlert.model.Person;
 import com.mycompany.safetyAlert.repository.DataRepository;
-import com.mycompany.safetyAlert.serviceDao.IPersonServiceDao;
 import com.mycompany.safetyAlert.serviceDao.PersonServiceDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

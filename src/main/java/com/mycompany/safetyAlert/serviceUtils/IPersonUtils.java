@@ -15,4 +15,5 @@ public interface IPersonUtils {
     Collection<PersonInfoWithFirestationNb> getPersonnsByAdress (String address);
     Collection<PersonInfoForFlood> getPersonnsByIdStation(String[] idStationList);
     List<Person> getListPersons();
+
 }

@@ -1,4 +1,4 @@
-package com.mycompany.safetyAlert.serviceUtils;
+package com.mycompany.safetyAlert.service;
 
 import com.mycompany.safetyAlert.dto.PersonInfoWithoutPhone;
 import com.mycompany.safetyAlert.exceptions.DataAlreadyExistException;
@@ -7,10 +7,9 @@ import com.mycompany.safetyAlert.exceptions.InvalidArgumentException;
 import com.mycompany.safetyAlert.model.Medicalrecord;
 import com.mycompany.safetyAlert.model.Person;
 import com.mycompany.safetyAlert.repository.DataRepository;
-import com.mycompany.safetyAlert.service.MedicalrecordService;
 import com.mycompany.safetyAlert.service.PersonService;
-import com.mycompany.safetyAlert.serviceDao.MedicalrecordServiceDao;
 import com.mycompany.safetyAlert.serviceDao.PersonServiceDao;
+import com.mycompany.safetyAlert.serviceUtils.PersonUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -38,10 +37,10 @@ public class PersonServiceTest {
     PersonService personServiceTest;
     @MockBean
     PersonServiceDao personServiceDaoTest;
-    @MockBean
-    MedicalrecordService medicalrecordServiceTest;
-    @MockBean
-    MedicalrecordServiceDao medicalrecordServiceDao;
+    //@MockBean
+    //MedicalrecordService medicalrecordServiceTest;
+    //@MockBean
+    //MedicalrecordServiceDao medicalrecordServiceDao;
     @MockBean
     DataNotFoundException dataNotFoundException;
     @MockBean
